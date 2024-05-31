@@ -1,19 +1,32 @@
 // src/components/TeamDisplay.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function TeamDisplay() {
+function TeamDisplay({ players }) {
   const [teams, setTeams] = useState([]);
-  const [players, setPlayers] = useState(['Player1', 'Player2', 'Player3', 'Player4']); // Example player list, replace with actual data
+
+  useEffect(() => {
+    setTeams([]); // Reset teams when players change
+  }, [players]);
 
   const generateTeams = () => {
-    axios.post('http://localhost:5001/api/teams/randomize', { players: players })
+    axios.post('http://localhost:5001/api/teams/randomize', { players })
       .then(response => {
-        setTeams(response.data);
+        const generatedTeams = response.data.map((team, index) => ({
+          name: `Team ${index + 1}`,
+          players: team.players
+        }));
+        setTeams(generatedTeams);
       })
       .catch(error => {
         console.error('There was an error generating the teams!', error);
       });
+  };
+
+  const handleTeamNameChange = (index, event) => {
+    const updatedTeams = teams.slice();
+    updatedTeams[index].name = event.target.value;
+    setTeams(updatedTeams);
   };
 
   return (
@@ -21,7 +34,13 @@ function TeamDisplay() {
       <button onClick={generateTeams}>Generate Teams</button>
       <ul>
         {teams.map((team, index) => (
-          <li key={index}>{team[0]} & {team[1]}</li>
+          <li key={index}>
+            <input
+              type="text"
+              value={team.name}
+              onChange={(event) => handleTeamNameChange(index, event)}
+            />: {team.players[0]} & {team.players[1]}
+          </li>
         ))}
       </ul>
     </div>
@@ -29,4 +48,7 @@ function TeamDisplay() {
 }
 
 export default TeamDisplay;
+
+
+
 

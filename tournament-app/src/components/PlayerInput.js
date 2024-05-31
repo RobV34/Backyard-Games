@@ -2,19 +2,22 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function PlayerInput() {
+function PlayerInput({ onPlayersUpdate }) {
   const [players, setPlayers] = useState([]);
   const [name, setName] = useState('');
 
   const addPlayer = () => {
-    axios.post('http://localhost:5001/api/players', { name })
-      .then(response => {
-        setPlayers([...players, response.data]);
-        setName('');
-      })
-      .catch(error => {
-        console.error('There was an error adding the player!', error);
-      });
+    if (name.trim() !== '') {
+      const newPlayers = [...players, name];
+      setPlayers(newPlayers);
+      setName('');
+      onPlayersUpdate(newPlayers); // Update parent component with new players list
+    }
+  };
+
+  const clearPlayers = () => {
+    setPlayers([]);
+    onPlayersUpdate([]);
   };
 
   return (
@@ -25,9 +28,10 @@ function PlayerInput() {
         onChange={e => setName(e.target.value)}
       />
       <button onClick={addPlayer}>Add Player</button>
+      <button onClick={clearPlayers}>Clear Players</button>
       <ul>
-        {players.map(player => (
-          <li key={player._id}>{player.name}</li>
+        {players.map((player, index) => (
+          <li key={index}>{player}</li>
         ))}
       </ul>
     </div>
@@ -35,4 +39,5 @@ function PlayerInput() {
 }
 
 export default PlayerInput;
+
 

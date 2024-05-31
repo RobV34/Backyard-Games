@@ -1,16 +1,22 @@
 // src/App.js
-import React from 'react';
+import React, { useState } from 'react';
 import PlayerInput from './components/PlayerInput';
 import TeamDisplay from './components/TeamDisplay';
 import TournamentSchedule from './components/TournamentSchedule';
 import ResultsInput from './components/ResultsInput';
 
 function App() {
+  const [players, setPlayers] = useState([]);
+
+  const handlePlayersUpdate = (newPlayers) => {
+    setPlayers(newPlayers);
+  };
+
   return (
     <div className="App">
       <h1>Backyard Games Tournament</h1>
-      <PlayerInput />
-      <TeamDisplay />
+      <PlayerInput onPlayersUpdate={handlePlayersUpdate} />
+      <TeamDisplay players={players} />
       <TournamentSchedule />
       <ResultsInput />
     </div>
@@ -18,4 +24,5 @@ function App() {
 }
 
 export default App;
+
 
