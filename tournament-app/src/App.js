@@ -1,4 +1,4 @@
-// App.js
+// src/App.js
 import React from 'react';
 import PlayerInput from './components/PlayerInput';
 import TeamDisplay from './components/TeamDisplay';

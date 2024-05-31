@@ -1,17 +1,20 @@
-// backend/index.js
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+// src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
-mongoose.connect('mongodb://localhost:27017/tournament', { useNewUrlParser: true, useUnifiedTopology: true });
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
 
-// Define your routes here
-
-app.listen(5000, () => {
-  console.log('Server is running on port 5000');
-});
 
